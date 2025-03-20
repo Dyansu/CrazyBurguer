@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CrazyBurguer.Controlador
+namespace CrazyBurguer.Model
 {
-    class Usuario
+    class Ejem
     {
-        
     }
 }
