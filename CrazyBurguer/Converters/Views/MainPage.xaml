@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"  
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+             xmlns:vm="clr-namespace:ComidaApp.ViewModels"
+             xmlns:converters="clr-namespace:ComidaApp.Converters;assembly=ComidaApp"
+             x:Class="ComidaApp.Views.MainPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="White">
+    <ContentPage.BindingContext>
+        <vm:MainViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <!-- Estilos para botones animados y contenedores modernos -->
+        <Style x:Key="AnimatedButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="BorderColor" Value="Black" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="Padding" Value="10,5" />
+        </Style>
+        <Style x:Key="HeaderContainerStyle" TargetType="Grid">
+            <Setter Property="BackgroundColor" Value="#D32F2F" />
+            <!-- Rojo intenso -->
+            <Setter Property="Padding" Value="15" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout Spacing="0">
+            <!-- Encabezado con animación y estilo moderno -->
+            <Grid Style="{StaticResource HeaderContainerStyle}" RowSpacing="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Ícono de usuario con animación al tocar -->
+                <Image x:Name="UserIcon" Source="user_icon.png" 
+               HeightRequest="30" WidthRequest="30" 
+               VerticalOptions="Center" 
+               Grid.Row="0" Grid.Column="0">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnUserIconTapped" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <!-- Título centrado -->
+                <Label Text="Comida App" 
+               FontSize="24" 
+               TextColor="White" 
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               Grid.Row="0" Grid.Column="1" />
+
+                <!-- Ícono de carrito con animación al tocar -->
+                <Image x:Name="CartIcon" Source="cart_icon.png" 
+               HeightRequest="30" WidthRequest="30" 
+               VerticalOptions="Center"
+               Grid.Row="0" Grid.Column="2">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnCartIconTapped" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <!-- SearchBar integrado en el encabezado -->
+                <SearchBar Grid.Row="1" Grid.ColumnSpan="3" 
+                   Placeholder="Buscar productos..." 
+                   Text="{Binding Busqueda}" 
+                   SearchCommand="{Binding BuscarCommand}" />
+            </Grid>
+
+            <!-- Botones de categorías con estilo animado -->
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="5" BackgroundColor="#D32F2F">
+                <Button Text="Hamburguesas" Style="{StaticResource AnimatedButtonStyle}" 
+                Command="{Binding FiltrarCommand}" CommandParameter="hamburguesa" />
+                <Button Text="Bebidas" Style="{StaticResource AnimatedButtonStyle}" 
+                Command="{Binding FiltrarCommand}" CommandParameter="bebida" />
+                <Button Text="Complementos" Style="{StaticResource AnimatedButtonStyle}" 
+                Command="{Binding FiltrarCommand}" CommandParameter="complemento" />
+            </StackLayout>
+
+            <!-- Listado de productos con contenedores modernos -->
+            <ListView ItemsSource="{Binding Productos}" HasUnevenRows="True" SeparatorVisibility="None" BackgroundColor="White">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Frame Margin="10" Padding="15" HasShadow="True" CornerRadius="15" BackgroundColor="White">
+                                <Grid ColumnSpacing="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <!-- Imagen del producto -->
+                                    <Image Grid.Column="0"
+                         Source="{Binding imagen, Converter={StaticResource ByteArrayToImageConverter}}"
+                         WidthRequest="80" HeightRequest="80" Aspect="AspectFill" />
+                                    <!-- Detalles del producto -->
+                                    <StackLayout Grid.Column="1" VerticalOptions="Center">
+                                        <Label Text="{Binding nombre}" FontAttributes="Bold" FontSize="Medium" TextColor="Black"/>
+                                        <Label Text="{Binding descripcion}" FontSize="Small" TextColor="Gray" LineBreakMode="TailTruncation" />
+                                        <Label Text="{Binding precio, StringFormat='Precio: {0:C}'}" TextColor="#388E3C" FontSize="Small" />
+                                    </StackLayout>
+                                </Grid>
+                            </Frame>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
+
+
