@@ -6,6 +6,6 @@ namespace CrazyBurguer.Controlador
 {
     class Usuario
     {
-
+        xd
     }
 }
